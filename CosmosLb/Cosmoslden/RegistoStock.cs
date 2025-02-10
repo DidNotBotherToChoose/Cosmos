@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
-
-namespace Cosmos.CosmosIden
+namespace CosmosLb.Cosmoslden
 {
-    public class RegistoStocks
+ public class RegistoStock
     {
         public int Id { get; set; }
         public int ProdutoId { get; set; }
