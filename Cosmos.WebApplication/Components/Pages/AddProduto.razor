@@ -1,0 +1,59 @@
+﻿@page "/addproduto"
+@using Cosmos.WebApi.Models
+@* @using Cosmos.WebApplication.Models *@
+@inject HttpClient Http
+
+@rendermode InteractiveServer
+
+@inject IWebApi WebApi
+
+<EditForm FormName="AddProdutoForm" Model="@produtoModel" OnValidSubmit="SaveProduto">
+	<InputText @bind-Value=@produtoModel.Nome />
+	<InputText @bind-Value=@produtoModel.Descricao />
+
+	<button type="submit">Add</button>
+</EditForm>
+
+<h3>AddProduto</h3>
+
+@code {
+	private ProdutoModel produtoModel { get; set; } = new();
+
+	private async void SaveProduto()
+	{
+		// var newProduto = new Cosmos.WebApi.Models.ProdutoModel();
+		// newProduto.Nome = produtoModel.Nome;
+		// await WebApi.AddProduto(newProduto);
+
+		var newProduto = new ProdutoModel();
+
+		newProduto.Nome = produtoModel.Nome;
+		newProduto.Descricao = produtoModel.Descricao;
+		newProduto.CreatedAt = DateTime.Now;
+		newProduto.UpdatedAt = DateTime.Now;
+		newProduto.Id = 0;
+		try{
+			// await WebApi.AddProduto(newProduto);
+
+			var stringJson = new StringContent(
+				System.Text.Json.JsonSerializer.Serialize(newProduto),
+				System.Text.Encoding.UTF8,
+				"application/json"
+			);
+
+			HttpClientHandler handler = new HttpClientHandler();
+
+			using (var client = new HttpClient(handler, false))
+		{
+				var response = await Http.PostAsync("https://localhost:/addprodutos", stringJson);
+
+			}
+
+		}
+		catch (Exception e){
+			Console.WriteLine(e);
+			throw;
+		}
+	}
+
+}

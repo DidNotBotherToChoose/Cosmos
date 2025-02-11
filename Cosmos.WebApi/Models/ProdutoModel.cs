@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cosmos.CosmosIden;
 
-namespace CosmosLb.Cosmoslden
+namespace Cosmos.WebApi.Models
 {
-   public class Produto : RegistoStock
+    public class ProdutoModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public int CategoriaId { get; set; }
@@ -20,6 +16,5 @@ namespace CosmosLb.Cosmoslden
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
-
     }
 }
