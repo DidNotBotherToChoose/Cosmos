@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Cosmos.CosmosIden;
+using CosmosLb.Cosmoslden;
 using Microsoft.EntityFrameworkCore;
 
-
-namespace Cosmos.Data
+namespace CosmosLb.Data
 {
-    public class CosmosContext : DbContext, ICosmosContext
+   public class CosmosContext : DbContext, ICosmosContext
     {
-
         public DbSet<Produto> Produtos { get; set; }
-        public DbSet<Categoria> Categorias { get; set; }
-
-        public DbSet<RegistoStocks> Stocks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

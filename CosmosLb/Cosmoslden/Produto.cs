@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cosmos.CosmosIden
+namespace CosmosLb.Cosmoslden
 {
-    public class Produto : Categoria
+   public class Produto : RegistoStock
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -20,5 +20,6 @@ namespace Cosmos.CosmosIden
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
     }
 }
