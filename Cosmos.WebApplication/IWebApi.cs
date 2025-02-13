@@ -9,7 +9,10 @@ namespace Cosmos.WebApplication
         [Get("/getprodutos")]
         Task<List<ProdutoModel>> GetProdutos();
 
-        [Get("/getproduto")]
+        //[Get("/getproduto")]
+        //Task<ProdutoModel> GetProduto(int id);
+
+        [Get("/produtos/{id}")]
         Task<ProdutoModel> GetProduto(int id);
 
         [Post("/addprodutos")]
