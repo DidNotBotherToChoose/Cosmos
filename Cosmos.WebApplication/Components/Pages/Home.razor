@@ -1,0 +1,115 @@
+﻿@page "/"
+@using Cosmos.Shared.Models
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+
+@inject IWebApi WebApi
+
+<PageTitle>Home</PageTitle>
+
+<div>
+    @if (ProdutosItems.Any())
+    {
+        <div class="container text-center">
+
+            @foreach (var item in ProdutosItems.Where(x => x.IsDeleted==false))
+            {
+
+                <div class="row">
+                    <div class="col">
+                        @item.Nome
+                    </div>
+                    <div class="col">
+                        @item.Descricao
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-danger" @onclick="() => DeleteProduto(item.Id)">Delete</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-success" @onclick="() => NavigationDetail(item.Id)">Details</button>
+                    </div>
+                </div>
+
+
+                @*             <MudCard>
+                <MudCardMedia Image="images/door.jpg" Height="200" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Old Paint</MudText>
+                    <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
+                    <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                </MudCardActions>
+            </MudCard> *@
+
+            }
+        </div>
+    }
+</div>
+
+@code{
+    List<Cosmos.Shared.Models.ProdutoModel> ProdutosItems { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        ProdutosItems = await WebApi.GetProdutos();
+
+    }
+
+    private async void DeleteProduto(long id)
+    {
+        var response = await WebApi.DeleteProduto(id);
+    } 
+
+    private void NavigationDetail(int id){
+        NavigationManager.NavigateTo($"produto/{id}", true);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@*............................................................................................
+@if(_products.Any())
+{
+    <div class="d-flex flex-wrap">
+        @foreach (var product in _products){
+            <MudCard>
+                <MudCardMedia Image="images/door.jpg" Height="200" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Old Paint</MudText>
+                    <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
+                    <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                </MudCardActions>
+            </MudCard>
+        }
+    </div>
+}
+
+@code{
+    private List<Product> _products = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var response = await DummyJsonApi.GetAllProducts();
+
+        _products = response.Products;
+
+    }
+} *@

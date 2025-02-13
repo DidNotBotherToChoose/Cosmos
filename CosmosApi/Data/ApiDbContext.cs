@@ -18,15 +18,37 @@ namespace CosmosApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().HasKey(x => x.UserId);
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.CreatedByUser)
+                .WithOne(x => x.CreatedByUser)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.UpdatedByUser)
+                .WithOne(x => x.UpdatedByUser)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            // Relacionamento entre StockMovement e User
+            modelBuilder.Entity<StockMovement>().HasKey(x => x.StockMovementId);
             modelBuilder.Entity<StockMovement>()
-                .HasOne(sm => sm.CreatedByUser) 
-                .WithMany() 
-                .HasForeignKey("CreatedByUserId")  
-                .OnDelete(DeleteBehavior.Restrict); 
+                .HasOne(x => x.CreatedByUser)
+                .WithMany(x => x.CreatedByUser)
+                .HasForeignKey(x => x.CreatedByUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<StockMovement>()
+                .HasOne(x => x.UpdatedByUser)
+                .WithMany(x => x.UpdatedByUser)
+                .HasForeignKey(x => x.UpdatedByUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+
+            base.OnModelCreating(modelBuilder);
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Data Source=SQL1002.site4now.net;Initial Catalog=db_ab244b_cosmos;User Id=db_ab244b_cosmos_admin;Password=e9P&s8fKsgRZ9G*7;TrustServerCertificate=True;");
+            base.OnConfiguring(optionsBuilder); 
+        }
+        
 
     }
 }
