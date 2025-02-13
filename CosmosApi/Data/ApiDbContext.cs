@@ -18,7 +18,29 @@ namespace CosmosApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().WithMany<StockMovement>();
+            modelBuilder.Entity<User>().HasKey(x => x.UserId);
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.CreatedByUser)
+                .WithOne(x => x.CreatedByUser)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.UpdatedByUser)
+                .WithOne(x => x.UpdatedByUser)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<StockMovement>().HasKey(x => x.StockMovementId);
+            modelBuilder.Entity<StockMovement>()
+                .HasOne(x => x.CreatedByUser)
+                .WithMany(x => x.CreatedByUser)
+                .HasForeignKey(x => x.CreatedByUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<StockMovement>()
+                .HasOne(x => x.UpdatedByUser)
+                .WithMany(x => x.UpdatedByUser)
+                .HasForeignKey(x => x.UpdatedByUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+
             base.OnModelCreating(modelBuilder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

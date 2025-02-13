@@ -12,7 +12,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services
     .AddRefitClient<IWebApi>()
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:"));
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:7134"));
 
 builder.Services.AddMudServices();
 

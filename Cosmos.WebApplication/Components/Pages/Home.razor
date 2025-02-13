@@ -1,5 +1,7 @@
 ﻿@page "/"
 @using Cosmos.Shared.Models
+@inject NavigationManager NavigationManager
+@inject IWebApi WebApi
 @rendermode InteractiveServer
 
 @inject NavigationManager NavigationManager
@@ -13,37 +15,41 @@
     {
         <div class="container text-center">
 
-            @foreach (var item in ProdutosItems.Where(x => x.IsDeleted==false))
+            @foreach (var produto in ProdutosItems.Where(x => x.IsDeleted==false))
             {
 
-                <div class="row">
+@*                 <div class="row">
                     <div class="col">
-                        @item.Nome
+                        @produto.Nome
                     </div>
                     <div class="col">
-                        @item.Descricao
+                        @produto.Descricao
                     </div>
                     <div class="col">
-                        <button class="btn btn-danger" @onclick="() => DeleteProduto(item.Id)">Delete</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteProduto(produto.Id)">Delete</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-success" @onclick="() => NavigationDetail(item.Id)">Details</button>
+                        <button class="btn btn-success" @onclick="() => NavigationDetail(produto.Id)">Details</button>
                     </div>
-                </div>
+                </div> *@
 
-
-                @*             <MudCard>
-                <MudCardMedia Image="images/door.jpg" Height="200" />
-                <MudCardContent>
-                    <MudText Typo="Typo.h5">Old Paint</MudText>
-                    <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
-                    <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
-                </MudCardActions>
-            </MudCard> *@
+                <MudCard Class="w-25 m-2">
+@*                     <MudCardMedia Image=@produto.Images.FirstOrDefault() Height="200" /> *@
+                    <MudCarousel Class="mud-width-full" ShowArrows="@(produto.Images.Count>1)" ShowBullets="@(produto.Images.Count>1)" ItemsSource="@produto?.Images" Style="height:400px;" AutoCycle="false">
+                            <ItemTemplate>
+                                <MudImage Src="@context" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+                            </ItemTemplate>
+                        </MudCarousel>
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@produto.Nome</MudText>
+                        <MudText Typo="Typo.body2">@produto.Descricao</MudText>
+                        @* <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText> *@
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="()=>NavigationDetail(produto.Id)">Details</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="() => DeleteProduto(produto.Id)">Delete</MudButton>
+                    </MudCardActions>
+                </MudCard>
 
             }
         </div>
@@ -51,7 +57,7 @@
 </div>
 
 @code{
-    List<Cosmos.Shared.Models.ProdutoModel> ProdutosItems { get; set; } = new();
+    private List<Cosmos.Shared.Models.ProdutoModel> ProdutosItems { get; set; } = new();
 
     protected override async Task OnParametersSetAsync()
     {
