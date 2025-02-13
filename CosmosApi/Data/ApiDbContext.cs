@@ -18,15 +18,15 @@ namespace CosmosApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().WithMany<StockMovement>();
             base.OnModelCreating(modelBuilder);
-
-            // Relacionamento entre StockMovement e User
-            modelBuilder.Entity<StockMovement>()
-                .HasOne(sm => sm.CreatedByUser) 
-                .WithMany() 
-                .HasForeignKey("CreatedByUserId")  
-                .OnDelete(DeleteBehavior.Restrict); 
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Data Source=SQL1002.site4now.net;Initial Catalog=db_ab244b_cosmos;User Id=db_ab244b_cosmos_admin;Password=e9P&s8fKsgRZ9G*7;TrustServerCertificate=True;");
+            base.OnConfiguring(optionsBuilder); 
+        }
+        
 
     }
 }

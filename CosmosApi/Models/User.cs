@@ -9,8 +9,8 @@
         public bool IsStaff { get; set; }
         public string Password { get; set; }
 
-        public ICollection<StockMovement> CreatedStockMovements { get; set; }
-        public ICollection<StockMovement> UpdatedStockMovements { get; set; }
+        public ICollection<StockMovement> CreatedByUser { get; set; }
+        public ICollection<StockMovement> UpdatedByUser { get; set; }
     }
 
 }

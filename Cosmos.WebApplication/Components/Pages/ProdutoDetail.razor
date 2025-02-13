@@ -1,0 +1,30 @@
+﻿@page "/produto/{Id:int}"
+@using Cosmos.WebApi.Models
+@inject IWebApi WebApi
+@rendermode InteractiveServer
+
+<h3>ProdutoDetail</h3>
+
+<EditForm FormName="AddProdutoForm" Model="@produtoModel" OnValidSubmit="SaveProduto">
+	<InputText @bind-Value=@produtoModel.Nome />
+	<InputText @bind-Value=@produtoModel.Descricao />
+
+	<button type="submit">Save</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	private Cosmos.Shared.Models.ProdutoModel produtoModel { get; set; } = new();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		produtoModel = await WebApi.GetProduto(Id);
+	}
+
+	private async void SaveProduto()
+	{
+		var result = await WebApi.UpdateProduto(produtoModel);
+	}
+}
