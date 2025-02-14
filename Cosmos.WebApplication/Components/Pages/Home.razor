@@ -4,9 +4,7 @@
 @inject IWebApi WebApi
 @rendermode InteractiveServer
 
-@inject NavigationManager NavigationManager
 
-@inject IWebApi WebApi
 
 <PageTitle>Home</PageTitle>
 
@@ -34,12 +32,12 @@
                 </div> *@
 
                 <MudCard Class="w-25 m-2">
-@*                     <MudCardMedia Image=@produto.Images.FirstOrDefault() Height="200" /> *@
+                    @*                     <MudCardMedia Image=@produto.Images.FirstOrDefault() Height="200" /> *@
                     <MudCarousel Class="mud-width-full" ShowArrows="@(produto.Images.Count>1)" ShowBullets="@(produto.Images.Count>1)" ItemsSource="@produto?.Images" Style="height:400px;" AutoCycle="false">
-                            <ItemTemplate>
-                                <MudImage Src="@context" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-                            </ItemTemplate>
-                        </MudCarousel>
+                        <ItemTemplate>
+                            <MudImage Src="@context" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+                        </ItemTemplate>
+                    </MudCarousel>
                     <MudCardContent>
                         <MudText Typo="Typo.h5">@produto.Nome</MudText>
                         <MudText Typo="Typo.body2">@produto.Descricao</MudText>
