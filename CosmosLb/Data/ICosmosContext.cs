@@ -10,7 +10,7 @@ namespace CosmosLb.Data
 {
    public interface ICosmosContext
     {
-        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Product> Products { get; set; }
 
     }
 }

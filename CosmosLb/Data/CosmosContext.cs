@@ -14,7 +14,7 @@ namespace CosmosLb.Data
         {
         }
 
-        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

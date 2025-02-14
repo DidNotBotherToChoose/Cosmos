@@ -1,7 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using CosmosLb.Cosmoslden;
+﻿using CosmosLb.Cosmoslden;
 using CosmosLb.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,34 +16,34 @@ namespace Cosmo.WebApi.Controllers
         }
 
 
-        [HttpGet("/getprodutos")]
+        [HttpGet("/getproducts")]
 
-        public async Task<IActionResult> GetTasks()
+        public async Task<IActionResult> GetProducts()
         {
-            var taskTable = await _cosmosContext.Produtos.ToListAsync();
+            var product = await _cosmosContext.Products.ToListAsync();
 
-            if (!taskTable.Any())
+            if (!product.Any())
                 return NotFound();
             else
-                return Ok(taskTable);
+                return Ok(product);
 
         }
 
-        [HttpPost("/updateproduto")]
-        public async Task<IActionResult> Update(Produto model)
+        [HttpPost("/updateproduct")]
+        public async Task<IActionResult> UpdateProduct(Product model)
         {
-            var produto = await _cosmosContext.Produtos.FirstOrDefaultAsync(c => c.Id == model.Id);
+            var product = await _cosmosContext.Products.FirstOrDefaultAsync(c => c.Id == model.Id);
             
-            if (produto is null) //se não existe, guarda novo produto
+            if (product is null) //se não existe, guarda novo produto
             {
-                await _cosmosContext.Produtos.AddAsync(model);
+                await _cosmosContext.Products.AddAsync(model);
             }
             else //se existe, atualiza produto
             {
-                produto.Id = model.Id;
-                produto.Nome = model.Nome;
-                produto.Descricao=model.Descricao;
-                produto.Stock = model.Stock; 
+                product.Id = model.Id;
+                product.Nome = model.Nome;
+                product.Descricao=model.Descricao;
+                product.Stock = model.Stock; 
             }
 
             var result = await _cosmosContext.SaveChangesAsync();
@@ -56,15 +54,15 @@ namespace Cosmo.WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("/students/{id}")]
-        public async Task<Produto> GetProduto(int id)
+        [HttpGet("/products/{id}")]
+        public async Task<Product> GetProduct(int id)
         {
-            var produto = await _cosmosContext.Produtos.FirstOrDefaultAsync(s => s.Id.Equals(id));
+            var product = await _cosmosContext.Products.FirstOrDefaultAsync(s => s.Id.Equals(id));
 
-            if (produto is null)
+            if (product is null)
                 return null;
 
-            return produto;
+            return product;
         }
     }
 }

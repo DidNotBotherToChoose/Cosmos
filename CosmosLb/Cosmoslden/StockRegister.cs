@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace CosmosLb.Cosmoslden
 {
- public class RegistoStock
+ public class StockRegister
     {
         public int Id { get; set; }
-        public int ProdutoId { get; set; }
-        public int Quantidade { get; set; }
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
         public DateTime Data { get; set; }
-        public bool Tipo { get; set; } // true para entrada, false para saída
+        public bool Type { get; set; } // true para entrada, false para saída
     }
 }

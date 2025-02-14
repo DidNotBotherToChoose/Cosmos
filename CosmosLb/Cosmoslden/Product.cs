@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace CosmosLb.Cosmoslden
 {
-   public class Produto
+   public class Product
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
-        public decimal PrecoCusto { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
         public int Stock { get; set; }
         public bool IsDeleted { get; set; } // soft delete
-        public Categoria Categoria { get; set; }
+        public Category Category { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
