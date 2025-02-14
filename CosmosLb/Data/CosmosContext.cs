@@ -10,6 +10,10 @@ namespace CosmosLb.Data
 {
    public class CosmosContext : DbContext, ICosmosContext
     {
+        public CosmosContext(DbContextOptions options) : base(options)
+        {
+        }
+
         public DbSet<Produto> Produtos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
