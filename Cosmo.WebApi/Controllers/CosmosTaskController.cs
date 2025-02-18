@@ -7,10 +7,10 @@ namespace Cosmo.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CosmoTaskController : ControllerBase
+    public class CosmosTaskController : ControllerBase
     {
         private readonly CosmosContext _cosmosContext;
-        public CosmoTaskController(CosmosContext cosmosContext)
+        public CosmosTaskController(CosmosContext cosmosContext)
         {
             _cosmosContext = cosmosContext;
         }
@@ -41,8 +41,8 @@ namespace Cosmo.WebApi.Controllers
             else //se existe, atualiza produto
             {
                 product.Id = model.Id;
-                product.Nome = model.Nome;
-                product.Descricao=model.Descricao;
+                product.Name = model.Name;
+                product.Description = model.Description;
                 product.Stock = model.Stock; 
             }
 

@@ -16,7 +16,7 @@ namespace Cosmos.WebApplication
         Task<Product> GetProduct(int id);
 
         [Post("/addproducts")]
-        Task<HttpResponseMessage> AddProduct([FromBody] Cosmos.WebApi.Models.ProductModel productModel);
+        Task<HttpResponseMessage> AddProduct([FromBody] Cosmos.Shared.Models.Product productModel);
 
         [Delete("/deleteproduct")]
         Task<HttpResponseMessage> DeleteProduct(long id);

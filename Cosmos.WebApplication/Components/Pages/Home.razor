@@ -35,7 +35,7 @@
                     @*<MudCardMedia Image=@produto.Images.FirstOrDefault() Height="200" /> *@
                     <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count>1)" ShowBullets="@(product.Images.Count>1)" ItemsSource="@product?.Images" Style="height:400px;" AutoCycle="false">
                         <ItemTemplate>
-                            <MudImage Src="@context" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+                            <MudImage Src="@context.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
                         </ItemTemplate>
                     </MudCarousel>
                     <MudCardContent>
@@ -44,8 +44,8 @@
                     @*<MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText> *@
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="()=>NavigationDetail(product.Id)">Details</MudButton>
-                        <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="() => DeleteProduto(product.Id)">Delete</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="()=>NavigationDetail(product.ProductId)">Details</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="() => DeleteProduct(product.ProductId)">Delete</MudButton>
                     </MudCardActions>
                 </MudCard>
 
@@ -55,7 +55,7 @@
 </div>
 
 @code{
-    private List<Cosmos.Shared.Models.ProductModel> ProductsItems { get; set; } = new();
+    private List<Product> ProductsItems { get; set; } = new();
 
     protected override async Task OnParametersSetAsync()
     {
