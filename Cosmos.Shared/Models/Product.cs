@@ -27,7 +27,7 @@ namespace Cosmos.Shared.Models
 
         public bool IsDeleted { get; set; }
 
-        public List<Image> Images { get; set; }
+        public List<Image?> Images { get; set; }
         public List<StockMovement> StockMovements { get; set; }
     }
 
