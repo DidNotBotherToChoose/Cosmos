@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CosmosLb.Cosmoslden;
+﻿using Cosmos.Shared.Data;
+using Cosmos.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CosmosLb.Data
+namespace Cosmos.Shared.Data
 {
-   public class CosmosContext : DbContext, ICosmosContext
+    public class CosmosContext : DbContext, ICosmosContext
     {
         public CosmosContext(DbContextOptions options) : base(options)
         {

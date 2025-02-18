@@ -1,14 +1,14 @@
-﻿@page "/produto"
-@page "/produto/{Id:int}"
-@using Cosmos.WebApi.Models
+﻿@page "/product"
+@page "/product/{Id:int}"
+@using Cosmos.Shared.Models
 @inject IWebApi WebApi
 @rendermode InteractiveServer
 
-<h3>ProdutoDetail</h3>
+<h3>Product Detail</h3>
 
-<MudCarousel Class="mud-width-full" ItemsSource="@_produtoModel?.Images" Style="height:400px;">
+<MudCarousel Class="mud-width-full" ItemsSource="@_productModel?.Images" Style="height:400px;">
 	<ItemTemplate>
-		<MudImage Src="@context" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+		<MudImage Src="@context.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
 	</ItemTemplate>
 </MudCarousel>
 
@@ -26,9 +26,9 @@
 	}
 </MudCarousel> *@
 
-<EditForm FormName="AddProdutoForm" Model="@_produtoModel" OnValidSubmit="SaveProduto">
-	<InputText @bind-Value=@_produtoModel.Nome />
-	<InputText @bind-Value=@_produtoModel.Descricao />
+<EditForm FormName="AddProductForm" Model="@_productModel" OnValidSubmit="SaveProduct">
+	<InputText @bind-Value=@_productModel.Name />
+	<InputText @bind-Value=@_productModel.Description />
 
 	<button type="submit">Save</button>
 </EditForm>
@@ -37,23 +37,23 @@
 	[Parameter]
 	public int? Id { get; set; }
 
-	private Cosmos.Shared.Models.ProdutoModel _produtoModel { get; set; } = new();
+	private Cosmos.Shared.Models.Product _productModel { get; set; } = new();
 
 	private Transition transition = Transition.Slide;
 
 	protected override async Task OnParametersSetAsync()
 	{
 		if(Id is not null){
-			_produtoModel = await WebApi.GetProduto(Id.Value);
+			_productModel = await WebApi.GetProduct(Id.Value);
 		}
 	}
 
-	private async void SaveProduto()
+	private async void SaveProduct()
 	{
-		_produtoModel.CreatedAt = DateTime.Now;
-		var result = await WebApi.UpdateProduto(_produtoModel);
+		//_productModel.CreatedAt = DateTime.Now;
+		var result = await WebApi.UpdateProduct(_productModel);
 
-		_produtoModel = new();
+		_productModel = new();
 		StateHasChanged();
 	}
 

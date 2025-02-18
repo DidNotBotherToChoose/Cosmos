@@ -1,42 +1,41 @@
-﻿@page "/addproduto"
-@using Cosmos.WebApi.Models
-@* @using Cosmos.WebApplication.Models *@
+﻿@page "/addproduct"
+@using Cosmos.Shared.Models
 @inject HttpClient Http
 
 @rendermode InteractiveServer
 
 @inject IWebApi WebApi
 
-<EditForm FormName="AddProdutoForm" Model="@produtoModel" OnValidSubmit="SaveProduto">
-	<InputText @bind-Value=@produtoModel.Nome />
-	<InputText @bind-Value=@produtoModel.Descricao />
+<EditForm FormName="AddProductForm" Model="@productModel" OnValidSubmit="SaveProduct">
+	<InputText @bind-Value=@productModel.Name />
+	<InputText @bind-Value=@productModel.Description />
 
 	<button type="submit">Add</button>
 </EditForm>
 
-<h3>AddProduto</h3>
+<h3>AddProduct</h3>
 
 @code {
-	private ProdutoModel produtoModel { get; set; } = new();
+	private Product productModel { get; set; } = new();
 
-	private async void SaveProduto()
+	private async void SaveProduct()
 	{
 		// var newProduto = new Cosmos.WebApi.Models.ProdutoModel();
 		// newProduto.Nome = produtoModel.Nome;
 		// await WebApi.AddProduto(newProduto);
 
-		var newProduto = new ProdutoModel();
+		var newProduct = new Product();
 
-		newProduto.Nome = produtoModel.Nome;
-		newProduto.Descricao = produtoModel.Descricao;
-		newProduto.CreatedAt = DateTime.Now;
-		newProduto.UpdatedAt = DateTime.Now;
-		newProduto.Id = 0;
+		newProduct.Name = productModel.Name;
+		newProduct.Description = productModel.Description;
+		//newProduct.CreatedAt = DateTime.Now;
+		//newProduct.UpdatedAt = DateTime.Now;
+		newProduct.ProductId = 0;
 		try{
 			// await WebApi.AddProduto(newProduto);
 
 			var stringJson = new StringContent(
-				System.Text.Json.JsonSerializer.Serialize(newProduto),
+				System.Text.Json.JsonSerializer.Serialize(newProduct),
 				System.Text.Encoding.UTF8,
 				"application/json"
 			);
@@ -45,7 +44,7 @@
 
 			using (var client = new HttpClient(handler, false))
 		{
-				var response = await Http.PostAsync("https://localhost:/addprodutos", stringJson);
+				var response = await Http.PostAsync("https://localhost:/addproducts", stringJson);
 
 			}
 
