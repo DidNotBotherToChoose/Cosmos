@@ -1,4 +1,4 @@
-using CosmosLb.Data;
+using Cosmos.Shared.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -2,7 +2,7 @@
 using Cosmos.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cosmos.Data
+namespace Cosmos.Shared.Data
 {
     public class CosmosContext : DbContext, ICosmosContext
     {

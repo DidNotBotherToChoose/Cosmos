@@ -1,6 +1,6 @@
 ﻿@page "/product"
 @page "/product/{Id:int}"
-@using Cosmos.WebApi.Models
+@using Cosmos.Shared.Models
 @inject IWebApi WebApi
 @rendermode InteractiveServer
 
@@ -8,7 +8,7 @@
 
 <MudCarousel Class="mud-width-full" ItemsSource="@_productModel?.Images" Style="height:400px;">
 	<ItemTemplate>
-		<MudImage Src="@context" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+		<MudImage Src="@context.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
 	</ItemTemplate>
 </MudCarousel>
 
@@ -37,7 +37,7 @@
 	[Parameter]
 	public int? Id { get; set; }
 
-	private Cosmos.Shared.Models.ProductModel _productModel { get; set; } = new();
+	private Cosmos.Shared.Models.Product _productModel { get; set; } = new();
 
 	private Transition transition = Transition.Slide;
 
@@ -50,7 +50,7 @@
 
 	private async void SaveProduct()
 	{
-		_productModel.CreatedAt = DateTime.Now;
+		//_productModel.CreatedAt = DateTime.Now;
 		var result = await WebApi.UpdateProduct(_productModel);
 
 		_productModel = new();

@@ -1,5 +1,5 @@
 ﻿@page "/addproduct"
-@using Cosmos.WebApi.Models
+@using Cosmos.Shared.Models
 @inject HttpClient Http
 
 @rendermode InteractiveServer
@@ -16,7 +16,7 @@
 <h3>AddProduct</h3>
 
 @code {
-	private ProductModel productModel { get; set; } = new();
+	private Product productModel { get; set; } = new();
 
 	private async void SaveProduct()
 	{
@@ -24,13 +24,13 @@
 		// newProduto.Nome = produtoModel.Nome;
 		// await WebApi.AddProduto(newProduto);
 
-		var newProduct = new ProductModel();
+		var newProduct = new Product();
 
-		newProduct.Nome = productModel.Nome;
-		newProduct.Descricao = productModel.Descricao;
-		newProduct.CreatedAt = DateTime.Now;
-		newProduct.UpdatedAt = DateTime.Now;
-		newProduct.Id = 0;
+		newProduct.Name = productModel.Name;
+		newProduct.Description = productModel.Description;
+		//newProduct.CreatedAt = DateTime.Now;
+		//newProduct.UpdatedAt = DateTime.Now;
+		newProduct.ProductId = 0;
 		try{
 			// await WebApi.AddProduto(newProduto);
 

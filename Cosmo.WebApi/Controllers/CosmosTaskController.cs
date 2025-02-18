@@ -1,9 +1,11 @@
-﻿using CosmosLb.Cosmoslden;
-using CosmosLb.Data;
+﻿
+using Cosmos.Shared.Data;
+using Cosmos.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cosmo.WebApi.Controllers
+
+namespace Cosmos.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -32,7 +34,7 @@ namespace Cosmo.WebApi.Controllers
         [HttpPost("/updateproduct")]
         public async Task<IActionResult> UpdateProduct(Product model)
         {
-            var product = await _cosmosContext.Products.FirstOrDefaultAsync(c => c.Id == model.Id);
+            var product = await _cosmosContext.Products.FirstOrDefaultAsync(c => c.ProductId == model.ProductId);
             
             if (product is null) //se não existe, guarda novo produto
             {
@@ -40,7 +42,7 @@ namespace Cosmo.WebApi.Controllers
             }
             else //se existe, atualiza produto
             {
-                product.Id = model.Id;
+                product.ProductId = model.ProductId;
                 product.Name = model.Name;
                 product.Description = model.Description;
                 product.Stock = model.Stock; 
@@ -57,7 +59,7 @@ namespace Cosmo.WebApi.Controllers
         [HttpGet("/products/{id}")]
         public async Task<Product> GetProduct(int id)
         {
-            var product = await _cosmosContext.Products.FirstOrDefaultAsync(s => s.Id.Equals(id));
+            var product = await _cosmosContext.Products.FirstOrDefaultAsync(s => s.ProductId.Equals(id));
 
             if (product is null)
                 return null;
