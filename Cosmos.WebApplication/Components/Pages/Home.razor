@@ -32,8 +32,11 @@
                 </div> *@
 
                     <MudCard Class="w-25 m-2">
-                        @*<MudCardMedia Image=@produto.Images.FirstOrDefault() Height="200" /> *@
-                        @if (product?.Images is not null)
+                    <MudCardMedia Image="@(product.Images?.FirstOrDefault()?.URL ?? "/Images/Quarta Asa.jpg")" Height="200" />
+
+
+
+                    @if (product?.Images is not null)
                         {
                             <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count>1)" ShowBullets="@(product.Images.Count>1)" ItemsSource="@product?.Images" Style="height:400px;" AutoCycle="false">
                                 <ItemTemplate>
