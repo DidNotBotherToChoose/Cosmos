@@ -4,12 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cosmos.Shared.Data
 {
-    public class CosmosContext : DbContext, ICosmosContext
+    public class CosmosContext : DbContext
     {
-        public CosmosContext(DbContextOptions options) : base(options)
-        {
-        }
-
         public DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

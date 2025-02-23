@@ -10,16 +10,21 @@ namespace Cosmos.WebApplication
         //[Get("/")]
         Task<List<Product>> GetAllProducts();
 
+        [Post("/saveproduct")]
+        Task<HttpResponseMessage> SaveProduct([FromBody] Product product);
+
         [Get("/product/{id}")]
         Task<Product> GetProduct(int id);
 
-        [Post("/addproduct")]
-        Task<HttpResponseMessage> AddProduct([FromBody] Product productModel);
-
-        [Delete("/deleteproduct")]
-        Task<HttpResponseMessage> DeleteProduct(int id);
-
         [Put("/updateproduct")]
-        Task<HttpResponseMessage> UpdateProduct([FromBody] Product productModel);
+        Task<HttpResponseMessage> UpdateProduct([FromBody] Product product);
+
+        //[Post("/addproduct")]
+        //Task<HttpResponseMessage> AddProduct([FromBody] Product product);
+
+        //[Delete("/deleteproduct")]
+        //Task<HttpResponseMessage> DeleteProduct(int id);
+
+
     }
 }

@@ -6,10 +6,18 @@
 
 <h3>Home</h3>
 
-@if (_products.Any())
+@if (_products?.Any() is true)
+{
+    foreach (var product in _products)
+    {
+        <p>@product.ProductId --- @product.Name</p>
+    }
+}
+
+@* @if (_products?.Any() is  true)
 {
     <div class="d-flex flex-wrap">
-        @foreach (var product in _products.Where(x => x.IsDeleted == false))
+        @foreach (var product in _products)
         {
             <MudCard Class="w-25 m-2">
                 <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count > 1)" ShowBullets="@(product.Images.Count > 1)" ItemsSource="@product?.Images" Style="height:200px" AutoCycle="false">
@@ -28,10 +36,10 @@
             </MudCard>
         }
     </div>
-}
+} *@
 
 @code{
-    private List<Product> _products { get; set; } = new();
+    private List<Product> _products = new();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -46,16 +54,16 @@
         }
     }
 
-    private async void DeleteProduct(long? id)
-    {
-        if(id is not null)
-        {
-            var response = await WebApi.DeleteProduct((int)id);
-        }
-    } 
+    // private async void DeleteProduct(int? id)
+    // {
+    //     if(id is not null)
+    //     {
+    //         var response = await WebApi.DeleteProduct((int)id);
+    //     }
+    // } 
 
-    private void Details(int? id){
-        NavigationManager.NavigateTo($"product/{id}", true);
-    }
+    // private void Details(int? id){
+    //     NavigationManager.NavigateTo($"product/{id}", true);
+    // }
 
 }
