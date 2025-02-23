@@ -6,8 +6,8 @@ namespace Cosmos.WebApplication
 {
     public interface IWebApi
     {
-        //[Get("/products")]
-        [Get("/")]
+        [Get("/products")]
+        //[Get("/")]
         Task<List<Product>> GetAllProducts();
 
         [Get("/product/{id}")]
