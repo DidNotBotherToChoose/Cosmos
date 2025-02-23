@@ -56,7 +56,7 @@
 
 	private async void UpdateProduct()
 	{
-		//_productModel.CreatedAt = DateTime.Now;
+		Product.CreatedAt = DateTime.Now;
 		var result = await WebApi.UpdateProduct(Product);
 
 		Product = new();

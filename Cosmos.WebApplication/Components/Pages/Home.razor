@@ -4,7 +4,7 @@
 @inject IWebApi WebApi
 @rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<h3>Home</h3>
 
 @if (_products.Any())
 {
@@ -22,7 +22,6 @@
                     <MudText Typo="Typo.body2">@product?.Description</MudText>
                 </MudCardContent>
                 <MudCardActions>
-                    @* <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="()=>Details((int)product?.ProductId)">Favorite</MudButton> *@
                     <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="() => Details((int)product?.ProductId)">Details</MudButton>
                     <MudButton Variant="Variant.Text" Color="Color.Error" OnClick="() => DeleteProduct((int)product?.ProductId)">Delete</MudButton>
                 </MudCardActions>
