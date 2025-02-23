@@ -22,9 +22,8 @@ namespace Cosmos.WebApplication
         //[Post("/addproduct")]
         //Task<HttpResponseMessage> AddProduct([FromBody] Product product);
 
-        //[Delete("/deleteproduct")]
-        //Task<HttpResponseMessage> DeleteProduct(int id);
-
+        [Delete("/deleteproduct")]
+        Task<HttpResponseMessage> DeleteProduct(int id);
 
     }
 }

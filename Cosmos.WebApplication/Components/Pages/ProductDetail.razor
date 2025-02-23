@@ -4,17 +4,28 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using MudBlazor
 @inject IWebApi WebApi
-@* @inject ISnackBar SnackBar *@
-@* @inject Cosmos.WebApi.ProductService ProductService *@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
 <h3>Product Detail</h3>
 
-<MudCarousel Class="mud-width-full" ItemsSource="@_product?.Images" Style="height:200px;">
+@* <MudCarousel Class="mud-width-full" ItemsSource="@_product?.Images" Style="height:200px;">
 	<ItemTemplate>
-		<MudImage Src="@context.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+		<MudImage Src="images/logo.jpeg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
 	</ItemTemplate>
+</MudCarousel> *@
+
+<MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+	<MudCarouselItem Transition="transition" Color="@Color.Primary">
+		<div class="d-flex" style="height:100%">
+			<MudImage Src="images/logo.jpeg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+		</div>
+	</MudCarouselItem>
+	<MudCarouselItem Transition="transition" Color="@Color.Secondary">
+		<div class="d-flex" style="height:100%">
+			<MudImage Src="images/Quarta Asa.jpeg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+		</div>
+	</MudCarouselItem>
 </MudCarousel>
 
 @if (_product is not null)
@@ -47,6 +58,12 @@
 	// @page "/product" -> se chamarmos esta, ele pensa que e para adiconar novo produto
 	// @page "/product/{Id:int}" -> enquanto esta serve para ver um produto especifico
 
+	private bool arrows = true;
+	private bool bullets = true;
+	private bool enableSwipeGesture = true;
+	private bool autocycle = true;
+	private Transition transition = Transition.Slide;
+
 	[Parameter]
 	public int? Id { get; set; }
 
@@ -56,7 +73,7 @@
 	{
 		_product.CreatedAt = DateTime.Now;
 
-		var response = await WebApi.SaveProduct(_product);
+		var response = await WebApi.UpdateProduct(_product);
 
 		_product = new();
 
@@ -74,24 +91,6 @@
 			_product = await WebApi.GetProduct(Id.Value);
 		}
 	}
-
-
-
-	// protected override async Task OnParametersSetAsync()
-	// {
-	// 	if(Id is not null){
-	// 		Product = await WebApi.GetProduct(Id.Value);
-	// 	}
-	// }
-
-	// private async void UpdateProduct()
-	// {
-	// 	Product.CreatedAt = DateTime.Now;
-	// 	var result = await WebApi.UpdateProduct(Product);
-
-	// 	Product = new();
-	// 	StateHasChanged();
-	// }
 
 	// private void DeleteProduct()
 	// {

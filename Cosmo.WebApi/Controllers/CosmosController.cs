@@ -40,14 +40,18 @@ namespace Cosmos.WebApi.Controllers
         {
             var productToUpdate = await _cosmosContext.Products.FirstOrDefaultAsync(p => p.ProductId.Equals(product.ProductId));
 
-            if(productToUpdate is null)
-                return BadRequest();
-
-            productToUpdate.Name = product.Name;
-            productToUpdate.Description = product.Description;
-            productToUpdate.Price = product.Price;
-            productToUpdate.Stock = product.Stock;
-            productToUpdate.UpdatedAt = DateTime.Now;
+            if (productToUpdate is null)
+            {
+                await _cosmosContext.Products.AddAsync(product);
+            }
+            else 
+            { 
+                productToUpdate.Name = product.Name;
+                productToUpdate.Description = product.Description;
+                productToUpdate.Price = product.Price;
+                productToUpdate.Stock = product.Stock;
+                productToUpdate.UpdatedAt = DateTime.Now;
+            }
 
             var result = await _cosmosContext.SaveChangesAsync();
 
