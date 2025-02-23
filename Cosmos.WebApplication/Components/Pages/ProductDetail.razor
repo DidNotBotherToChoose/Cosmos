@@ -36,14 +36,14 @@
 			<label for="exampleFormControlInput4" class="form-label">Stock</label>
 			<InputNumber class="form-control" id="exampleFormControlInput4" @bind-Value=@_product.Stock></InputNumber>
 		</div>
-		<button type="submit" class="btn btn-primary" @* @onclick=UpdateProduct *@>Save</button>
-		@* <button class="btn btn-danger" @onclick=DeleteProduct>Delete</button> *@
+		<button type="submit" class="btn btn-primary" @onclick=SaveProduct>Save</button>
+		<button class="btn btn-danger" @* @onclick=DeleteProduct *@>Delete</button>
 
 	</EditForm>
 }
 
 @code {
-	//nota: 
+	//NOTA: 
 	// @page "/product" -> se chamarmos esta, ele pensa que e para adiconar novo produto
 	// @page "/product/{Id:int}" -> enquanto esta serve para ver um produto especifico
 
@@ -63,6 +63,8 @@
 		// Snackbar.Add("Product added successfully", Severity.Success);
 
 		StateHasChanged();
+
+		NavigationManager.NavigateTo($"/", true);
 	}
 
 	protected override async Task OnParametersSetAsync()

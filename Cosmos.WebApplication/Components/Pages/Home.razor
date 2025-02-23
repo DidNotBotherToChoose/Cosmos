@@ -6,37 +6,26 @@
 
 <h3>Home</h3>
 
+@* <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count > 1)" ShowBullets="@(product.Images.Count > 1)" ItemsSource="@product?.Images" Style="height:200px" AutoCycle="false"> *@
+
 @if (_products?.Any() is true)
 {
     foreach (var product in _products)
     {
-        <p>@product.ProductId --- @product.Name</p>
+        <MudCard Class="w-25 m-2">
+            <MudCardMedia Image="images/logo.jpeg" Height="200" />
+            <MudCardContent>
+                <MudText Typo="Typo.h5">@product.Name</MudText>
+                <MudText Typo="Typo.body2">@product.Description</MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="() => Details((int)product?.ProductId)">Details</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Error">Delete</MudButton>
+            </MudCardActions>
+        </MudCard>
     }
 }
 
-@* @if (_products?.Any() is  true)
-{
-    <div class="d-flex flex-wrap">
-        @foreach (var product in _products)
-        {
-            <MudCard Class="w-25 m-2">
-                <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count > 1)" ShowBullets="@(product.Images.Count > 1)" ItemsSource="@product?.Images" Style="height:200px" AutoCycle="false">
-                    <ItemTemplate>
-                        <MudImage Src="@context.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-                    </ItemTemplate>
-                </MudCarousel>
-                <MudCardContent>
-                    <MudText Typo="Typo.h5">@product?.Name</MudText>
-                    <MudText Typo="Typo.body2">@product?.Description</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="() => Details((int)product?.ProductId)">Details</MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Error" OnClick="() => DeleteProduct((int)product?.ProductId)">Delete</MudButton>
-                </MudCardActions>
-            </MudCard>
-        }
-    </div>
-} *@
 
 @code{
     private List<Product> _products = new();
@@ -62,8 +51,8 @@
     //     }
     // } 
 
-    // private void Details(int? id){
-    //     NavigationManager.NavigateTo($"product/{id}", true);
-    // }
+    private void Details(int? id){
+        NavigationManager.NavigateTo($"/product/{id}", true);
+    }
 
 }
