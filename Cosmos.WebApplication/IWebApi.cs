@@ -6,13 +6,14 @@ namespace Cosmos.WebApplication
 {
     public interface IWebApi
     {
-        [Get("/products")]
+        //[Get("/products")]
+        [Get("/")]
         Task<List<Product>> GetAllProducts();
 
-        [Get("/products/{id}")]
+        [Get("/product/{id}")]
         Task<Product> GetProduct(int id);
 
-        [Post("/addproducts")]
+        [Post("/addproduct")]
         Task<HttpResponseMessage> AddProduct([FromBody] Product productModel);
 
         [Delete("/deleteproduct")]
