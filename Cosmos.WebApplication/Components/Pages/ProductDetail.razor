@@ -1,0 +1,73 @@
+﻿@page "/product"
+@page "/product/{Id:int}"
+@using Cosmos.Shared.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using MudBlazor
+@inject IWebApi WebApi
+@inject Cosmos.WebApi.ProductService ProductService
+@inject NavigationManager NavigationManager
+
+<h3>Product Detail</h3>
+
+<MudCarousel Class="mud-width-full" ItemsSource="@Product?.Images" Style="height:200px;">
+	<ItemTemplate>
+		<MudImage Src="@context.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+	</ItemTemplate>
+</MudCarousel>
+
+@if (Product is not null)
+{
+	<EditForm Model="Product" FormName="ProductForm">
+		<div class="mb-3">
+			<label for="exampleFormControlInput1" class="form-label">Title</label>
+			<InputText class="form-control" id="exampleFormControlInput1" @bind-Value=@Product.Name></InputText>
+		</div>
+		<div class="mb-3">
+			<label for="exampleFormControlInput2" class="form-label">Description</label>
+			<InputText class="form-control" id="exampleFormControlInput2" @bind-Value=@Product.Description></InputText>
+		</div>
+		<div class="mb-3">
+			<label for="exampleFormControlInput3" class="form-label">Price</label>
+			<InputNumber class="form-control" id="exampleFormControlInput3" @bind-Value=@Product.Price></InputNumber>
+		</div>
+		<div class="mb-3">
+			<label for="exampleFormControlInput4" class="form-label">Stock</label>
+			<InputNumber class="form-control" id="exampleFormControlInput4" @bind-Value=@Product.Stock></InputNumber>
+		</div>
+		<button class="btn btn-primary" @onclick=UpdateProduct>Save</button>
+		<button class="btn btn-danger" @onclick=DeleteProduct>Delete</button>
+
+	</EditForm>
+}
+
+@code {
+	[Parameter]
+	public int? Id { get; set; }
+
+	private Product Product { get; set; } = new();
+
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if(Id is not null){
+			Product = await WebApi.GetProduct(Id.Value);
+		}
+	}
+
+	private async void UpdateProduct()
+	{
+		//_productModel.CreatedAt = DateTime.Now;
+		var result = await WebApi.UpdateProduct(Product);
+
+		Product = new();
+		StateHasChanged();
+	}
+
+	private void DeleteProduct()
+	{
+		if (Product is not null)
+			ProductService.DeleteProduct(Product.ProductId);
+			NavigationManager.NavigateTo($"/");
+	}
+
+}

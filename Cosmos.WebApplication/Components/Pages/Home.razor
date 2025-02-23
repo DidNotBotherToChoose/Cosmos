@@ -4,70 +4,41 @@
 @inject IWebApi WebApi
 @rendermode InteractiveServer
 
-
-
 <PageTitle>Home</PageTitle>
 
-<div>
-    @if (ProductsItems.Any())
-    {
-        <div class="container text-center">
-
-            @foreach (var product in ProductsItems.Where(x => x.IsDeleted==false))
-            {
-
-                @*                 <div class="row">
-                    <div class="col">
-                        @produto.Nome
-                    </div>
-                    <div class="col">
-                        @produto.Descricao
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-danger" @onclick="() => DeleteProduto(produto.Id)">Delete</button>
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-success" @onclick="() => NavigationDetail(produto.Id)">Details</button>
-                    </div>
-                </div> *@
-
-                    <MudCard Class="w-25 m-2">
-                    <MudCardMedia Image="@(product.Images?.FirstOrDefault()?.URL ?? "/Images/Quarta Asa.jpg")" Height="200" />
-
-
-
-                    @if (product?.Images is not null)
-                        {
-                            <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count>1)" ShowBullets="@(product.Images.Count>1)" ItemsSource="@product?.Images" Style="height:400px;" AutoCycle="false">
-                                <ItemTemplate>
-                                    <MudImage Src="@context?.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-                                </ItemTemplate>
-                            </MudCarousel>
-                        }
-
-                        <MudCardContent>
-                            <MudText Typo="Typo.h5">@product?.Name</MudText>
-                            <MudText Typo="Typo.body2">@product?.Description</MudText>
-                            @*<MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText> *@
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="()=>NavigationDetail((int)product?.ProductId)">Details</MudButton>
-                            <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="() => DeleteProduct((long)product?.ProductId)">Delete</MudButton>
-                        </MudCardActions>
-                    </MudCard>
-            }
-        </div>
-    }
-</div>
+@if (_products.Any())
+{
+    <div class="d-flex flex-wrap">
+        @foreach (var product in _products.Where(x => x.IsDeleted == false))
+        {
+            <MudCard Class="w-25 m-2">
+                <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count > 1)" ShowBullets="@(product.Images.Count > 1)" ItemsSource="@product?.Images" Style="height:200px" AutoCycle="false">
+                    <ItemTemplate>
+                        <MudImage Src="@context.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+                    </ItemTemplate>
+                </MudCarousel>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">@product?.Name</MudText>
+                    <MudText Typo="Typo.body2">@product?.Description</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    @* <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="()=>Details((int)product?.ProductId)">Favorite</MudButton> *@
+                    <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="() => Details((int)product?.ProductId)">Details</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Error" OnClick="() => DeleteProduct((int)product?.ProductId)">Delete</MudButton>
+                </MudCardActions>
+            </MudCard>
+        }
+    </div>
+}
 
 @code{
-    private List<Product> ProductsItems { get; set; } = new();
+    private List<Product> _products { get; set; } = new();
 
     protected override async Task OnParametersSetAsync()
     {
         try
         {
-            ProductsItems = await WebApi.GetProducts();
+            _products = await WebApi.GetAllProducts();
         }
         catch (Exception e)
         {
@@ -80,11 +51,11 @@
     {
         if(id is not null)
         {
-            var response = await WebApi.DeleteProduct((long)id);
+            var response = await WebApi.DeleteProduct((int)id);
         }
     } 
 
-    private void NavigationDetail(int? id){
+    private void Details(int? id){
         NavigationManager.NavigateTo($"product/{id}", true);
     }
 

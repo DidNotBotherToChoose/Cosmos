@@ -18,9 +18,9 @@ namespace Cosmos.WebApi.Controllers
         }
 
 
-        [HttpGet("/getproducts")]
+        [HttpGet("/products")]
 
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetAllProducts()
         {
             var product = await _cosmosContext.Products.ToListAsync();
 
