@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cosmo.WebApi\Cosmos.WebApi.csproj" />
     <ProjectReference Include="..\Cosmos.Shared\Cosmos.Shared.csproj" />
   </ItemGroup>
 

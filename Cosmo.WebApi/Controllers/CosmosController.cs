@@ -21,6 +21,11 @@ namespace Cosmos.WebApi.Controllers
         {
             return await _cosmosContext.Products.ToListAsync();
         }
+        [HttpGet("/categories")]
+        public async Task<List<Category>> GetAllCategories()
+        {
+            return await _cosmosContext.Categories.ToListAsync();
+        }
 
         [HttpPost("/saveproduct")]
         public async Task<IActionResult> SaveProduct(Product product)

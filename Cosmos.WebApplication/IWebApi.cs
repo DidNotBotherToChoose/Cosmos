@@ -7,8 +7,9 @@ namespace Cosmos.WebApplication
     public interface IWebApi
     {
         [Get("/products")]
-        //[Get("/")]
         Task<List<Product>> GetAllProducts();
+        [Get("/categories")]
+        Task<List<Category>> GetAllCategories();
 
         [Post("/saveproduct")]
         Task<HttpResponseMessage> SaveProduct([FromBody] Product product);
