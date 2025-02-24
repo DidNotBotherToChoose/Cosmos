@@ -14,7 +14,7 @@
 </MudGrid>
 
 
-@if (_products?.Any() == true)
+@* @if (_products?.Any() == true)
 {
     <MudGrid>
         @foreach (var product in _products)
@@ -35,6 +35,27 @@
             </MudItem>
         }
     </MudGrid>
+} *@
+
+@if (_products?.Any() == true)
+{
+    <MudGrid>
+        @foreach (var product in _products)
+        {
+            string imageLink = $"/images/{product.Name}.jpg";
+            
+                <MudItem xs="12" sm="6" md="4" lg="2">
+                    <MudButton OnClick="() => Details((int)product?.ProductId)">
+                        <MudCard Class="w-100 m-2" Style="width: 400px;">
+                            <MudCardMedia Image="@imageLink" Height="200" />
+                            <MudCardContent>
+                                <MudText Typo="Typo.h6">@product.Name</MudText>
+                            </MudCardContent>
+					    </MudCard>
+				    </MudButton>
+                </MudItem>
+        }
+    </MudGrid>
 }
 
 @code{
@@ -53,14 +74,6 @@
             throw;
         }
     }
-
-    // private async void DeleteProduct(int? id)
-    // {
-    //     if(id is not null)
-    //     {
-    //         var response = await WebApi.DeleteProduct((int)id);
-    //     }
-    // } 
 
     private void Details(int? id){
         NavigationManager.NavigateTo($"/product/{id}", true);

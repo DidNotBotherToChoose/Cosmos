@@ -78,30 +78,20 @@
         }
         else
         {
-            
             _product = new Product();
+            _product.CreatedAt = DateTime.Now;
         }
     }
 
     private async void SaveProduct()
     {
-        try
-        {
-            _product.CreatedAt = DateTime.Now;
-
             var response = await WebApi.UpdateProduct(_product);
 
-            // Reset product data after successful update
-            _product = new Product();
             StateHasChanged();
 
             Snackbar.Add("Succeeded in updating product", Severity.Success);
             NavigationManager.NavigateTo($"/", true);
-        }
-        catch (Exception ex)
-        {
-            Snackbar.Add($"Error", Severity.Error);
-        }
+
     }
 
 
