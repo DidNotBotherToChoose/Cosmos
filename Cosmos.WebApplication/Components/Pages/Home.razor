@@ -4,7 +4,7 @@
 @inject IWebApi WebApi
 @rendermode InteractiveServer
 
-<h3>Home</h3>
+<MudText Align="Align.Center" Typo="Typo.h3"><b>List of Products</b></MudText>
 
 @* <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count > 1)" ShowBullets="@(product.Images.Count > 1)" ItemsSource="@product?.Images" Style="height:200px" AutoCycle="false"> *@
 
@@ -25,7 +25,6 @@
         </MudCard>
     }
 }
-
 
 @code{
     private List<Product> _products = new();

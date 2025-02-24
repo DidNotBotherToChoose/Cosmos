@@ -7,55 +7,61 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
-<h3>Product Detail</h3>
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
 
-@* <MudCarousel Class="mud-width-full" ItemsSource="@_product?.Images" Style="height:200px;">
-	<ItemTemplate>
-		<MudImage Src="images/logo.jpeg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-	</ItemTemplate>
-</MudCarousel> *@
-
-<MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-	<MudCarouselItem Transition="transition">
-		<div class="d-flex" style="height:100%">
-			<MudImage Src="images/FourthWing.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-		</div>
-	</MudCarouselItem>
-	<MudCarouselItem Transition="transition">
-		<div class="d-flex" style="height:100%">
-			<MudImage Src="images/TheGreatGatsby.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-		</div>
-	</MudCarouselItem>
-	<MudCarouselItem Transition="transition">
-		<div class="d-flex" style="height:100%">
-			<MudImage Src="images/ToKillAMockingbird.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-		</div>
-	</MudCarouselItem>
-</MudCarousel>
+<MudText Align="Align.Center" Typo="Typo.h3"><b>Product Detail</b></MudText>
 
 @if (_product is not null)
 {
-	<EditForm Model="_product" FormName="ProductEditForm" OnValidSubmit="SaveProduct">
-		<div class="mb-3">
-			<label for="exampleFormControlInput1" class="form-label">Title</label>
-			<InputText class="form-control" id="exampleFormControlInput1" @bind-Value=@_product.Name></InputText>
-		</div>
-		<div class="mb-3">
-			<label for="exampleFormControlInput2" class="form-label">Description</label>
-			<InputText class="form-control" id="exampleFormControlInput2" @bind-Value=@_product.Description></InputText>
-		</div>
-		<div class="mb-3">
-			<label for="exampleFormControlInput3" class="form-label">Price</label>
-			<InputNumber class="form-control" id="exampleFormControlInput3" @bind-Value=@_product.Price></InputNumber>
-		</div>
-		<div class="mb-3">
-			<label for="exampleFormControlInput4" class="form-label">Stock</label>
-			<InputNumber class="form-control" id="exampleFormControlInput4" @bind-Value=@_product.Stock></InputNumber>
-		</div>
-		<button type="submit" class="btn btn-primary" @onclick=SaveProduct>Save</button>
-		<button class="btn btn-danger" @* @onclick=DeleteProduct *@>Delete</button>
-
-	</EditForm>
+	<MudGrid>
+		<MudItem xs="12" sm="6">
+			<MudImage Class="d-flex justify-center align-center" Src="images/FourthWing.jpg" Height="400" ObjectFit="ObjectFit.Cover"></MudImage>
+@* 			<MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+				<MudCarouselItem Transition="transition">
+					<div class="d-flex" style="height:100%">
+						<MudImage Src="images/FourthWing.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+					</div>
+				</MudCarouselItem>
+				<MudCarouselItem Transition="transition">
+					<div class="d-flex" style="height:100%">
+						<MudImage Src="images/TheGreatGatsby.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+					</div>
+				</MudCarouselItem>
+				<MudCarouselItem Transition="transition">
+					<div class="d-flex" style="height:100%">
+						<MudImage Src="images/ToKillAMockingbird.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+					</div>
+				</MudCarouselItem>
+			</MudCarousel> *@
+		</MudItem>
+		<MudItem xs="12" sm="6">
+			<MudGrid Model="_product" FormName="ProductEditForm" OnValidSubmit="SaveProduct">
+				<MudItem xs="12" sm="12">
+					<MudTextField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Name" Label="Title" Variant="Variant.Outlined"></MudTextField>
+				</MudItem>
+				<MudItem xs="12" sm="12">
+					<MudTextField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Description" Label="Description" Variant="Variant.Outlined"></MudTextField>
+				</MudItem>
+				<MudItem xs="6">
+					<MudNumericField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Price" Label="Price/€" Variant="Variant.Outlined"></MudNumericField>
+				</MudItem>
+				<MudItem xs="6">
+					<MudNumericField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Stock" Label="Stock" Variant="Variant.Outlined"></MudNumericField>
+				</MudItem>
+			</MudGrid>
+		</MudItem>
+		<MudItem xs="12" sm="3">
+		</MudItem>
+		<MudItem xs="12" sm="3">
+			<MudButton Class="d-flex align-center justify-right mud-width-full py-3" type="submit" Variant="Variant.Filled" Color="Color.Success" @onclick=SaveProduct>Save</MudButton>
+		</MudItem>
+		<MudItem xs="12" sm="3">
+			<MudButton Class="d-flex align-center justify-left mud-width-full py-3" type="submit" Variant="Variant.Filled" Color="Color.Error" @onclick=SaveProduct>Delete</MudButton>
+		</MudItem>
+		<MudItem xs="12" sm="3">
+		</MudItem>
+	</MudGrid>
 }
 
 @code {
