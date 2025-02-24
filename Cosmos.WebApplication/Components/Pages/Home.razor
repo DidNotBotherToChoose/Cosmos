@@ -4,70 +4,43 @@
 @inject IWebApi WebApi
 @rendermode InteractiveServer
 
+<MudText Align="Align.Center" Typo="Typo.h3"><b>List of Products</b></MudText>
 
+@* <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count > 1)" ShowBullets="@(product.Images.Count > 1)" ItemsSource="@product?.Images" Style="height:200px" AutoCycle="false"> *@
 
-<PageTitle>Home</PageTitle>
+@if (_products?.Any() == true)
+{
+    <MudGrid>
+        @foreach (var product in _products)
+        {
+            string imageLink = $"/images/{product.Name}.jpg";
 
-<div>
-    @if (ProductsItems.Any())
-    {
-        <div class="container text-center">
-
-            @foreach (var product in ProductsItems.Where(x => x.IsDeleted==false))
-            {
-
-                @*                 <div class="row">
-                    <div class="col">
-                        @produto.Nome
-                    </div>
-                    <div class="col">
-                        @produto.Descricao
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-danger" @onclick="() => DeleteProduto(produto.Id)">Delete</button>
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-success" @onclick="() => NavigationDetail(produto.Id)">Details</button>
-                    </div>
-                </div> *@
-
-                    <MudCard Class="w-25 m-2">
-                    <MudCardMedia Image="@(product.Images?.FirstOrDefault()?.URL ?? "/Images/Quarta Asa.jpg")" Height="200" />
-
-
-
-                    @if (product?.Images is not null)
-                        {
-                            <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count>1)" ShowBullets="@(product.Images.Count>1)" ItemsSource="@product?.Images" Style="height:400px;" AutoCycle="false">
-                                <ItemTemplate>
-                                    <MudImage Src="@context?.URL" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-                                </ItemTemplate>
-                            </MudCarousel>
-                        }
-
-                        <MudCardContent>
-                            <MudText Typo="Typo.h5">@product?.Name</MudText>
-                            <MudText Typo="Typo.body2">@product?.Description</MudText>
-                            @*<MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText> *@
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="()=>NavigationDetail((int)product?.ProductId)">Details</MudButton>
-                            <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="() => DeleteProduct((long)product?.ProductId)">Delete</MudButton>
-                        </MudCardActions>
-                    </MudCard>
-            }
-        </div>
-    }
-</div>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudCard Class="w-100 m-2" Style="height: 400px;">
+                    <MudCardMedia Image="@imageLink" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@product.Name</MudText>
+                        <MudText Typo="Typo.body2">@product.Description</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="() => Details((int)product?.ProductId)">Details</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Error">Delete</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
 
 @code{
-    private List<Product> ProductsItems { get; set; } = new();
+
+    private List<Product> _products = new();
 
     protected override async Task OnParametersSetAsync()
     {
         try
         {
-            ProductsItems = await WebApi.GetProducts();
+            _products = await WebApi.GetAllProducts();
         }
         catch (Exception e)
         {
@@ -76,60 +49,21 @@
         }
     }
 
-    private async void DeleteProduct(long? id)
-    {
-        if(id is not null)
-        {
-            var response = await WebApi.DeleteProduct((long)id);
-        }
-    } 
+    // private async void DeleteProduct(int? id)
+    // {
+    //     if(id is not null)
+    //     {
+    //         var response = await WebApi.DeleteProduct((int)id);
+    //     }
+    // } 
 
-    private void NavigationDetail(int? id){
-        NavigationManager.NavigateTo($"product/{id}", true);
+    private void Details(int? id){
+        NavigationManager.NavigateTo($"/product/{id}", true);
     }
 
+    // public class Image
+    // {
+    //     public string productName { get; set; }
+    //     public string Src => $"{productName}.jpg";
+    // }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-@*............................................................................................
-@if(_products.Any())
-{
-    <div class="d-flex flex-wrap">
-        @foreach (var product in _products){
-            <MudCard>
-                <MudCardMedia Image="images/door.jpg" Height="200" />
-                <MudCardContent>
-                    <MudText Typo="Typo.h5">Old Paint</MudText>
-                    <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
-                    <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
-                </MudCardActions>
-            </MudCard>
-        }
-    </div>
-}
-
-@code{
-    private List<Product> _products = new();
-
-    protected override async Task OnParametersSetAsync()
-    {
-        var response = await DummyJsonApi.GetAllProducts();
-
-        _products = response.Products;
-
-    }
-} *@
