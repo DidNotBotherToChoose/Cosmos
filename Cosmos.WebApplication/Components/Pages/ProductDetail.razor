@@ -15,11 +15,18 @@
 
 @if (_product is not null)
 {
-    string imageLink = $"/images/{_product.Name}.jpg";
-
-    <MudGrid>
-        <MudItem xs="12" sm="6">
-            <MudImage Class="d-flex justify-center align-center" Src="@imageLink" Height="400" ObjectFit="ObjectFit.Cover"></MudImage>
+	string imageLink;
+    if (_product.Name is null)
+    {
+        imageLink = $"/images/BookPlaceholder.jpg";
+    }
+    else
+    {
+        imageLink = $"/images/{_product.Name}.jpg"; ;
+    }
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12" sm="6" Class="d-flex justify-end">
+            <MudImage Class="d-flex justify-center align-center" Src="@imageLink" Height="350" ObjectFit="ObjectFit.Cover"></MudImage>
         </MudItem>
         <MudItem xs="12" sm="6">
             <MudGrid>
@@ -39,18 +46,15 @@
                 </MudItem>
             </MudGrid>
         </MudItem>
-        <MudItem xs="12" sm="3">
-        </MudItem>
+    </MudGrid>
+    <MudGrid Justify="Justify.Center">
         <!-- buttons -->
-        <MudItem xs="12" sm="3">
-            <MudButton Class="d-flex align-center justify-right mud-width-full py-3" Variant="Variant.Filled" Color="Color.Success" @onclick="SaveProduct">Save</MudButton>
+        <MudItem xs="12" sm="2" Class="d-flex justify-end">
+            <MudButton Class="d-flex align-center justify-center mud-width-full py-3" Variant="Variant.Filled" Color="Color.Success" @onclick="SaveProduct">Save</MudButton>
         </MudItem>
-        <MudItem xs="12" sm="3">
-            <MudButton Class="d-flex align-center justify-left mud-width-full py-3" Variant="Variant.Filled" Color="Color.Error" @onclick="DeleteProduct">Delete</MudButton>
+        <MudItem xs="12" sm="2" >
+            <MudButton Class="d-flex align-center justify-center mud-width-full py-3" Variant="Variant.Filled" Color="Color.Error" @onclick="DeleteProduct">Delete</MudButton>
         </MudItem>
-        <MudItem xs="12" sm="3">
-        </MudItem>
-
     </MudGrid>
 }
 
@@ -68,11 +72,14 @@
     {
         if (Id.HasValue)
         {
+            
             _product = await WebApi.GetProduct(Id.Value);
+            string imageLink = $"/images/{_product.Name}.jpg";
         }
         else
         {
-            _product = new Product(); // Set to a new instance when adding a product
+            
+            _product = new Product();
         }
     }
 
