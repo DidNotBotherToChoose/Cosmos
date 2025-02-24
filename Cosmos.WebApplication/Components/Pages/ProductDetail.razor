@@ -16,14 +16,19 @@
 </MudCarousel> *@
 
 <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-	<MudCarouselItem Transition="transition" Color="@Color.Primary">
+	<MudCarouselItem Transition="transition">
 		<div class="d-flex" style="height:100%">
-			<MudImage Src="images/logo.jpeg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+			<MudImage Src="images/FourthWing.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
 		</div>
 	</MudCarouselItem>
-	<MudCarouselItem Transition="transition" Color="@Color.Secondary">
+	<MudCarouselItem Transition="transition">
 		<div class="d-flex" style="height:100%">
-			<MudImage Src="images/Quarta Asa.jpeg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+			<MudImage Src="images/TheGreatGatsby.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
+		</div>
+	</MudCarouselItem>
+	<MudCarouselItem Transition="transition">
+		<div class="d-flex" style="height:100%">
+			<MudImage Src="images/ToKillAMockingbird.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
 		</div>
 	</MudCarouselItem>
 </MudCarousel>
@@ -59,9 +64,9 @@
 	// @page "/product/{Id:int}" -> enquanto esta serve para ver um produto especifico
 
 	private bool arrows = true;
-	private bool bullets = true;
-	private bool enableSwipeGesture = true;
-	private bool autocycle = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
 	private Transition transition = Transition.Slide;
 
 	[Parameter]
