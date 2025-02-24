@@ -1,58 +1,99 @@
-﻿@page "/addproduct"
+﻿@* @page "/addproduct"
 @using Cosmos.Shared.Models
 @inject HttpClient Http
 @inject IWebApi WebApi
-@* @inject Cosmos.WebApi.ProductService ProductService *@
 @rendermode InteractiveServer
 
 <h3>Add Product</h3>
 
-@* <EditForm FormName="AddProductForm" Model="@_product" OnValidSubmit="SaveProduct">
-	<InputText @bind-Value=@_product.Name />
-	<InputText @bind-Value=@_product.Description />
+@using System.ComponentModel.DataAnnotations
 
-	<button type="submit">Add</button>
-</EditForm> *@
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                  @bind-Value="model.Username" For="@(() => model.Username)" />
+                    <MudTextField Label="Email" Class="mt-3"
+                                  @bind-Value="model.Email" For="@(() => model.Email)" />
+                    <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                  @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+                    <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                                  @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="5">
+            <MudPaper Class="pa-4 mud-height-full">
+                <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                @if (success)
+                {
+                    <MudText Color="Color.Success">Success</MudText>
+                }
+                else
+                {
+                    <MudText Color="@Color.Error">
+                        <ValidationSummary />
+                    </MudText>
+                }
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12">
+            <MudText Typo="Typo.body2" Align="Align.Center">
+                Fill out the form correctly to see the success message.
+            </MudText>
+        </MudItem>
+    </MudGrid>
+</EditForm>
 
 
 @code {
-	private Product _product { get; set; } = new();
 
+    private Product _product { get; set; } = new Product();
 
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id.HasValue)
+        {
+            _product = await WebApi.GetProduct(Id.Value);
+        }
+        else
+        {
+            _product = new Product(); // Set to a new instance when adding a product
+        }
+    }
 
+    RegisterAccountForm model = new RegisterAccountForm();
+    bool success;
 
+    public class RegisterAccountForm
+    {
+        [Required]
+        [StringLength(8, ErrorMessage = "Name length can't be more than 8.")]
+        public string Username { get; set; }
 
-	// private async void SaveProduct()
-	// {
-	// 	var newProduct = new Product();
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
 
-	// 	newProduct.Name = _product.Name;
-	// 	newProduct.Description = _product.Description;
-	// 	newProduct.CreatedAt = DateTime.Now;
-	// 	newProduct.UpdatedAt = DateTime.Now;
-	// 	newProduct.ProductId = 0;
-	// 	try{
-	// 		// await WebApi.AddProduto(newProduto);
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
 
-	// 		var stringJson = new StringContent(
-	// 			System.Text.Json.JsonSerializer.Serialize(newProduct),
-	// 			System.Text.Encoding.UTF8,
-	// 			"application/json"
-	// 		);
+        [Required]
+        [Compare(nameof(Password))]
+        public string Password2 { get; set; }
 
-	// 		HttpClientHandler handler = new HttpClientHandler();
+    }
 
-	// 		using (var client = new HttpClient(handler, false))
-	// 	{
-	// 			var response = await Http.PostAsync("https://localhost:/addproducts", stringJson);
-
-	// 		}
-
-	// 	}
-	// 	catch (Exception e){
-	// 		Console.WriteLine(e);
-	// 		throw;
-	// 	}
-	// }
-
-}
+    private void OnValidSubmit(EditContext context)
+    {
+        success = true;
+        StateHasChanged();
+    }
+} *@

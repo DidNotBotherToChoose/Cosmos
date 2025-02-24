@@ -4,7 +4,15 @@
 @inject IWebApi WebApi
 @rendermode InteractiveServer
 
-<MudText Align="Align.Center" Typo="Typo.h3"><b>List of Products</b></MudText>
+<MudGrid>
+    <MudItem xs="12" sm="11">
+        <MudText Align="Align.Center" Typo="Typo.h3"><b>List of Products</b></MudText>
+    </MudItem>
+    <MudItem xs="12" sm="1" Class="d-flex justify-end">
+        <MudButton Class="py-3" Variant="Variant.Filled" Color="Color.Surface" @onclick="AddProduct">Add</MudButton>
+    </MudItem>
+</MudGrid>
+
 
 @* <MudCarousel Class="mud-width-full" ShowArrows="@(product.Images.Count > 1)" ShowBullets="@(product.Images.Count > 1)" ItemsSource="@product?.Images" Style="height:200px" AutoCycle="false"> *@
 
@@ -15,9 +23,9 @@
         {
             string imageLink = $"/images/{product.Name}.jpg";
 
-            <MudItem xs="12" sm="6" md="4" lg="3">
+            <MudItem xs="12" sm="6" md="4" lg="2">
                 <MudCard Class="w-100 m-2" Style="height: 400px;">
-                    <MudCardMedia Image="@imageLink" Height="200" />
+                    <MudCardMedia Image="@imageLink" Height="400" />
                     <MudCardContent>
                         <MudText Typo="Typo.h5">@product.Name</MudText>
                         <MudText Typo="Typo.body2">@product.Description</MudText>
@@ -60,10 +68,8 @@
     private void Details(int? id){
         NavigationManager.NavigateTo($"/product/{id}", true);
     }
-
-    // public class Image
-    // {
-    //     public string productName { get; set; }
-    //     public string Src => $"{productName}.jpg";
-    // }
+    private void AddProduct()
+    {
+        NavigationManager.NavigateTo($"/product", true);
+    }
 }
