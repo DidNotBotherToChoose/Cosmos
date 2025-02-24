@@ -8,19 +8,22 @@
 
 <MudText Align="Align.Center" Typo="Typo.h3"><b>Inventory</b></MudText>
 
+@* <MudText Align="Align.Left" Typo="Typo.h5"><b>Category Resume</b></MudText>
+<MudDataGrid Items="@Categories.Take(5)">
+    <Columns>
+        <PropertyColumn Property="x => x.CategoryCode" Title="Top 5" />
+        <PropertyColumn Property="x => x.Description" Title="Average book cost/€" />
+        <PropertyColumn Property="x => x.Price" Title="Total stock" />
+    </Columns>
+</MudDataGrid> *@
 
 <MudText Align="Align.Left" Typo="Typo.h5"><b>Categories</b></MudText>
 <MudDataGrid Items="@Categories.Take(Categories.Count())">
     <Columns>
         <PropertyColumn Property="x => x.CategoryCode" Title="Name" />
         <PropertyColumn Property="x => x.Description" Title="Description" />
-
-@*         <PropertyColumn Property="x => x.CategoryCode" Title="Top 5:" />
-        <PropertyColumn Property="x => x.Description" Title="Average book cost:" />
-        <PropertyColumn Property="x => x.Price" Title="Stock" /> *@
     </Columns>
 </MudDataGrid>
-
 
 <MudText Align="Align.Left" Typo="Typo.h5"><b>Products</b></MudText>
 <MudDataGrid Items="@Products.Take(Products.Count())">
@@ -30,7 +33,7 @@
         <PropertyColumn Property="x => x.Price" Title="Price/€" />
         <PropertyColumn Property="x => x.Stock" Title="Stock" />
     </Columns>
-</MudDataGrid>
+</MudDataGrid> 
 
 @code {
     //NOTA: 
