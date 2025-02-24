@@ -6,6 +6,7 @@
 @inject IWebApi WebApi
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
+@inject ISnackbar Snackbar
 
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
@@ -14,100 +15,112 @@
 
 @if (_product is not null)
 {
-	<MudGrid>
-		<MudItem xs="12" sm="6">
-			<MudImage Class="d-flex justify-center align-center" Src="images/FourthWing.jpg" Height="400" ObjectFit="ObjectFit.Cover"></MudImage>
-@* 			<MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-				<MudCarouselItem Transition="transition">
-					<div class="d-flex" style="height:100%">
-						<MudImage Src="images/FourthWing.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-					</div>
-				</MudCarouselItem>
-				<MudCarouselItem Transition="transition">
-					<div class="d-flex" style="height:100%">
-						<MudImage Src="images/TheGreatGatsby.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-					</div>
-				</MudCarouselItem>
-				<MudCarouselItem Transition="transition">
-					<div class="d-flex" style="height:100%">
-						<MudImage Src="images/ToKillAMockingbird.jpg" Height="200" ObjectFit="ObjectFit.Cover"></MudImage>
-					</div>
-				</MudCarouselItem>
-			</MudCarousel> *@
-		</MudItem>
-		<MudItem xs="12" sm="6">
-			<MudGrid Model="_product" FormName="ProductEditForm" OnValidSubmit="SaveProduct">
-				<MudItem xs="12" sm="12">
-					<MudTextField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Name" Label="Title" Variant="Variant.Outlined"></MudTextField>
-				</MudItem>
-				<MudItem xs="12" sm="12">
-					<MudTextField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Description" Label="Description" Variant="Variant.Outlined"></MudTextField>
-				</MudItem>
-				<MudItem xs="6">
-					<MudNumericField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Price" Label="Price/€" Variant="Variant.Outlined"></MudNumericField>
-				</MudItem>
-				<MudItem xs="6">
-					<MudNumericField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Stock" Label="Stock" Variant="Variant.Outlined"></MudNumericField>
-				</MudItem>
-			</MudGrid>
-		</MudItem>
-		<MudItem xs="12" sm="3">
-		</MudItem>
-		<MudItem xs="12" sm="3">
-			<MudButton Class="d-flex align-center justify-right mud-width-full py-3" type="submit" Variant="Variant.Filled" Color="Color.Success" @onclick=SaveProduct>Save</MudButton>
-		</MudItem>
-		<MudItem xs="12" sm="3">
-			<MudButton Class="d-flex align-center justify-left mud-width-full py-3" type="submit" Variant="Variant.Filled" Color="Color.Error" @onclick=SaveProduct>Delete</MudButton>
-		</MudItem>
-		<MudItem xs="12" sm="3">
-		</MudItem>
-	</MudGrid>
+    string imageLink = $"/images/{_product.Name}.jpg";
+
+    <MudGrid>
+        <MudItem xs="12" sm="6">
+            <MudImage Class="d-flex justify-center align-center" Src="@imageLink" Height="400" ObjectFit="ObjectFit.Cover"></MudImage>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudGrid>
+                <!-- title -->
+                <MudItem xs="12" sm="12">
+                    <MudTextField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Name" Label="Title" Variant="Variant.Outlined"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="12">
+                    <MudTextField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Description" Label="Description" Variant="Variant.Outlined"></MudTextField>
+                </MudItem>
+                <!-- price and stock side by side-->
+                <MudItem xs="6">
+                    <MudNumericField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Price" Label="Price/€" Variant="Variant.Outlined"></MudNumericField>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudNumericField Class="d-flex align-center justify-center mud-width-full py-8" @bind-Value="@_product.Stock" Label="Stock" Variant="Variant.Outlined"></MudNumericField>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12" sm="3">
+        </MudItem>
+        <!-- buttons -->
+        <MudItem xs="12" sm="3">
+            <MudButton Class="d-flex align-center justify-right mud-width-full py-3" Variant="Variant.Filled" Color="Color.Success" @onclick="SaveProduct">Save</MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudButton Class="d-flex align-center justify-left mud-width-full py-3" Variant="Variant.Filled" Color="Color.Error" @onclick="DeleteProduct">Delete</MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="3">
+        </MudItem>
+
+    </MudGrid>
 }
 
 @code {
-	//NOTA: 
-	// @page "/product" -> se chamarmos esta, ele pensa que e para adiconar novo produto
-	// @page "/product/{Id:int}" -> enquanto esta serve para ver um produto especifico
+    //NOTA:
+    // @page "/product" -> se chamarmos esta, ele pensa que é para adicionar um novo produto
+    // @page "/product/{Id:int}" -> enquanto esta serve para ver um produto específico
 
-	private bool arrows = true;
-    private bool bullets = true;
-    private bool enableSwipeGesture = true;
-    private bool autocycle = true;
-	private Transition transition = Transition.Slide;
+    [Parameter]
+    public int? Id { get; set; }
 
-	[Parameter]
-	public int? Id { get; set; }
+    private Product _product { get; set; } = new Product();
 
-	private Product _product { get; set; } = new();
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id.HasValue)
+        {
+            _product = await WebApi.GetProduct(Id.Value);
+        }
+        else
+        {
+            _product = new Product(); // Set to a new instance when adding a product
+        }
+    }
 
-	private async void SaveProduct()
-	{
-		_product.CreatedAt = DateTime.Now;
+    private async void SaveProduct()
+    {
+        try
+        {
+            _product.CreatedAt = DateTime.Now;
 
-		var response = await WebApi.UpdateProduct(_product);
+            var response = await WebApi.UpdateProduct(_product);
 
-		_product = new();
+            // Reset product data after successful update
+            _product = new Product();
+            StateHasChanged();
 
-		// Snackbar.Add("Product added successfully", Severity.Success);
+            Snackbar.Add("Succeeded in updating product", Severity.Success);
+            NavigationManager.NavigateTo($"/", true);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error", Severity.Error);
+        }
+    }
 
-		StateHasChanged();
 
-		NavigationManager.NavigateTo($"/", true);
-	}
+    private async void DeleteProduct()
+    {
+        if (_product is not null)
+        {
+            var confirmed = await Task.Run(() =>
+                Confirm("Are you sure you want to delete this product?", "Confirm Delete"));
 
-	protected override async Task OnParametersSetAsync()
-	{
-		if (Id is not null)
-		{
-			_product = await WebApi.GetProduct(Id.Value);
-		}
-	}
+            if (confirmed)
+            {
+                await WebApi.DeleteProduct(_product.ProductId);
+                Snackbar.Add("Product deleted successfully.", Severity.Success);
+                NavigationManager.NavigateTo("/");
+            }
+        }
+        else
+        {
+            Snackbar.Add("No product to delete.", Severity.Warning);
+        }
+    }
 
-	// private void DeleteProduct()
-	// {
-	// 	if (Product is not null)
-	// 		ProductService.DeleteProduct(Product.ProductId);
-	// 		NavigationManager.NavigateTo($"/");
-	// }
-
+    private bool Confirm(string message, string title)
+    {
+        // Simple confirmation dialog logic, you can replace this with MudBlazor dialog if needed
+        return true; // Return `true` if confirmed
+    }
 }

@@ -2,7 +2,6 @@
 @using System.Net.Http.Json
 @using Cosmos.Shared.Data
 @using Cosmos.Shared.Models
-@* @using MudBlazor.Products.Data.Models *@
 @inject HttpClient httpClient
 @inject IWebApi WebApi
 
@@ -10,10 +9,11 @@
 
 @* <MudText Align="Align.Left" Typo="Typo.h5"><b>Category Resume</b></MudText>
 <MudDataGrid Items="@Categories.Take(5)">
+<MudDataGrid Items="@Categories.Take(5).Where(p=>p.CategoryId.Equals(2))">
     <Columns>
         <PropertyColumn Property="x => x.CategoryCode" Title="Top 5" />
         <PropertyColumn Property="x => x.Description" Title="Average book cost/€" />
-        <PropertyColumn Property="x => x.Price" Title="Total stock" />
+        <PropertyColumn Property="x => x.Description" Title="Total stock" />
     </Columns>
 </MudDataGrid> *@
 
@@ -30,6 +30,7 @@
     <Columns>
         <PropertyColumn Property="x => x.Name" Title="Title" />
         <PropertyColumn Property="x => x.Description" Title="Description" />
+        <PropertyColumn Property="x => x.Category.CategoryCode" Title="Category" />
         <PropertyColumn Property="x => x.Price" Title="Price/€" />
         <PropertyColumn Property="x => x.Stock" Title="Stock" />
     </Columns>
@@ -59,4 +60,13 @@
             throw;
         }
     }
+
+    // private async void TotalStock()
+    // {
+    //     // var productToUpdate = await WebApi.GetAllProducts().FirstOrDefaultAsync(p => p.ProductId.Equals(product.ProductId));
+    //     var productToUpdate = await WebApi.GetAllProducts().;
+
+
+
+    // }
 }
